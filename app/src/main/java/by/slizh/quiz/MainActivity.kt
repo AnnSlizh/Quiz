@@ -1,9 +1,16 @@
 package by.slizh.quiz
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import by.slizh.quiz.fragments.HomeFragment
+import by.slizh.quiz.fragments.RatingFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -14,9 +21,13 @@ import com.google.firebase.database.database
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var signOutButton: Button
+    private lateinit var signOutButton: ImageButton
+    private lateinit var homeButton: ImageButton
+    private lateinit var ratingListButton: ImageButton
 
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    private lateinit var fragmentManager: FragmentManager
 
     //private lateinit var auth: FirebaseAuth
 
@@ -35,13 +46,43 @@ class MainActivity : AppCompatActivity() {
 
         signOutButton.setOnClickListener {
 
-            googleSignInClient.signOut().addOnCompleteListener {
-                val intent = Intent(this, AuthActivity::class.java)
-                startActivity(intent)
-                finish()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Do you want to sign out of your account?")
+            builder.setPositiveButton("Yes") { p0, p1 ->
+
+                googleSignInClient.signOut().addOnCompleteListener {
+                    val intent = Intent(this, AuthActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                // auth.signOut()
+                Firebase.auth.signOut()
+                p0.dismiss()
             }
-               // auth.signOut()
-            Firebase.auth.signOut()
+            builder.setNegativeButton("No") { p0, p1 ->
+                p0.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
+
+        homeButton = findViewById(R.id.homeButton)
+        homeButton.setOnClickListener {
+            replaceFragment(HomeFragment())
+        }
+
+        ratingListButton = findViewById(R.id.ratingListButton)
+        ratingListButton.setOnClickListener {
+            replaceFragment(RatingFragment())
+        }
+
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        fragmentManager = supportFragmentManager
+
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+        fragmentTransaction.commit()
     }
 }

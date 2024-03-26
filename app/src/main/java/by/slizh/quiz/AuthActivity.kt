@@ -92,10 +92,10 @@ class AuthActivity : AppCompatActivity() {
                     val user = auth.currentUser
 
                     if (user != null) {
-                      //  Log.i("firebase", "Got value ${user.displayName}")
 
-                        val usersReference = Firebase.database.reference.child("users").child(user.uid)
-                        usersReference.addValueEventListener(object: ValueEventListener {
+                        val usersReference =
+                            Firebase.database.reference.child("users").child(user.uid)
+                        usersReference.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
 
                                 if (!snapshot.exists()) {
@@ -107,7 +107,6 @@ class AuthActivity : AppCompatActivity() {
 
                                     Firebase.database.reference.child("users").child(user.uid)
                                         .setValue(map)
-                                    goToMainActivity()
                                 }
                                 goToMainActivity()
                             }
@@ -115,44 +114,7 @@ class AuthActivity : AppCompatActivity() {
                             override fun onCancelled(error: DatabaseError) {
                                 Log.e("firebase", "Error getting data")
                             }
-
                         })
-
-//                        val currentUser =
-//                            Firebase.database.reference.child("users").child(user.uid).get()
-//                                .addOnSuccessListener {
-//                                    if (it == null) {
-//                                        val map = HashMap<String, Any?>()
-//                                        map["id"] = user.uid
-//                                        map["name"] = user.displayName
-//                                        map["email"] = user.email
-//                                        Log.i("firebase", "Got value ${user.displayName}")
-//
-//                                        Firebase.database.reference.child("users").child(user.uid)
-//                                            .setValue(map)
-//                                        goToMainActivity()
-//                                        Log.i("firebase", "Got value ${it?.value}")
-//                                    }
-                                //    goToMainActivity()
-
-
-                               // }.addOnFailureListener {
-                           //     Log.e("firebase", "Error getting data", it)
-
-                                //    goToMainActivity()
-                        //    }
-
-                        //       Log.d(TAG, "signInWithCredential:success")
-//                        if (currentUser == null) {
-//
-//                            val map = HashMap<String, Any?>()
-//                            map["id"] = user.uid
-//                            map["name"] = user.displayName
-//                            map["email"] = user.email
-//
-//                            Firebase.database.reference.child("users").child(user.uid).setValue(map)
-//                        }
-//                        goToMainActivity()
                     }
 
                 } else {
@@ -170,6 +132,7 @@ class AuthActivity : AppCompatActivity() {
     private fun goToMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 
