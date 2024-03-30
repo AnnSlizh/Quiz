@@ -9,6 +9,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import by.slizh.quiz.fragments.HomeFragment
 import by.slizh.quiz.fragments.RatingFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var fragmentManager: FragmentManager
+
 
     //private lateinit var auth: FirebaseAuth
 
@@ -66,14 +69,24 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
 
+
+
+
+
         homeButton = findViewById(R.id.homeButton)
         homeButton.setOnClickListener {
+//            val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+//            navController.navigate(R.id.action_ratingFragment_to_homeFragment)
+           // navController.navigate(R.id.action_quizFragment_to_homeFragment)
             replaceFragment(HomeFragment())
+            //   Navigation.findNavController(this, R.id.fragmentContainerView)
         }
 
         ratingListButton = findViewById(R.id.ratingListButton)
         ratingListButton.setOnClickListener {
             replaceFragment(RatingFragment())
+//            val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
+//            navController.navigate(R.id.action_homeFragment_to_ratingFragment)
         }
 
     }
@@ -84,5 +97,6 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
         fragmentTransaction.commit()
+
     }
 }
