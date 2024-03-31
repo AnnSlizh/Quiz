@@ -12,6 +12,9 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import by.slizh.quiz.data.Question
 import by.slizh.quiz.data.Topic
@@ -19,6 +22,8 @@ import by.slizh.quiz.data.UserResult
 import by.slizh.quiz.databinding.ActivityQuizBinding
 import by.slizh.quiz.databinding.ScoreDialogBinding
 import by.slizh.quiz.fragments.QuizFragmentArgs
+import by.slizh.quiz.viewModel.TopicViewModel
+import by.slizh.quiz.viewModel.UserResultViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -26,6 +31,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 //class QuizActivity : AppCompatActivity(), View.OnClickListener {
 //
@@ -225,6 +232,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auth: FirebaseAuth
 
+    private lateinit var userResultViewModel: UserResultViewModel
+
     companion object {
         var questionsList: List<Question> = listOf()
     }
@@ -259,38 +268,63 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private fun saveUserResult() {
         val currentUser = auth.currentUser
 
+        userResultViewModel = ViewModelProvider(this)[UserResultViewModel::class.java]
+
         if (currentUser != null) {
 
-            val usersReference =
-                Firebase.database.reference.child("quizResults").child(currentUser.uid)
-            usersReference.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
 
-                    if (!snapshot.exists()) {
-                        val map = HashMap<String, Any?>()
-                        map["id"] = currentUser.uid
-                        map["userName"] = currentUser.displayName
-                        map["bestResult"] = score
-                        Log.i("firebase", "Got value ${currentUser.displayName}")
+            userResultViewModel.getUserResultById(currentUser.uid)
 
-                        Firebase.database.reference.child("quizResults").child(currentUser.uid)
-                            .setValue(map)
-                    } else {
-                        val userResult = snapshot.getValue(UserResult::class.java)
-                        Log.i("firebase", "Result for db $userResult")
-                        if (userResult != null) {
-                            if (userResult.bestResult < score) {
-                                Firebase.database.reference.child("quizResults").child(currentUser.uid)
-                                    .child("bestResult").setValue(score)
-                            }
-                        }
+            userResultViewModel.userResult.observe(this, Observer { userResult ->
+
+                if (userResult != null) {
+                    if (userResult.bestResult < score) {
+                        userResultViewModel.updateUserResult(currentUser.uid, score)
                     }
+
+                } else {
+                    val map = HashMap<String, Any?>()
+                    map["id"] = currentUser.uid
+                    map["userName"] = currentUser.displayName
+                    map["bestResult"] = score
+                    Log.i("firebase", "Got value ${currentUser.displayName}")
+
+                    userResultViewModel.addUserResult(currentUser.uid, map)
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("firebase", "Error getting data")
-                }
             })
+
+
+//            val usersReference =
+//                Firebase.database.reference.child("quizResults").child(currentUser.uid)
+//            usersReference.addValueEventListener(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                    if (!snapshot.exists()) {
+//                        val map = HashMap<String, Any?>()
+//                        map["id"] = currentUser.uid
+//                        map["userName"] = currentUser.displayName
+//                        map["bestResult"] = score
+//                        Log.i("firebase", "Got value ${currentUser.displayName}")
+//
+//                        Firebase.database.reference.child("quizResults").child(currentUser.uid)
+//                            .setValue(map)
+//                    } else {
+//                        val userResult = snapshot.getValue(UserResult::class.java)
+//                        Log.i("firebase", "Result for db $userResult")
+//                        if (userResult != null) {
+//                            if (userResult.bestResult < score) {
+//                                Firebase.database.reference.child("quizResults").child(currentUser.uid)
+//                                    .child("bestResult").setValue(score)
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    Log.e("firebase", "Error getting data")
+//                }
+//            })
         }
     }
 

@@ -1,10 +1,10 @@
 package by.slizh.quiz.data
 
 data class UserResult (
-    val userId: Int,
+    val userId: String,
     val userName: String,
     val bestResult: Int
 )
 {
-    constructor() : this(0,"",0)
+    constructor() : this("","",0)
 }

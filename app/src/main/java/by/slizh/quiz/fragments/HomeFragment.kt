@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.slizh.quiz.R
 import by.slizh.quiz.adapters.HomeAdapter
 import by.slizh.quiz.data.Topic
 import by.slizh.quiz.databinding.FragmentHomeBinding
+import by.slizh.quiz.viewModel.TopicViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
 
@@ -116,6 +119,8 @@ class HomeFragment : Fragment() {
     private lateinit var adapter: HomeAdapter
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var viewModel : TopicViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -128,33 +133,42 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.recycleViewTopics)
+        setupRecyclerView()
+        viewModel = ViewModelProvider(this)[TopicViewModel::class.java]
 
-        quizModelList = mutableListOf()
-        getDataFromFirebase()
+        viewModel.allTopics.observe(viewLifecycleOwner, Observer {
+
+            adapter.updateUserList(it)
+
+        })
+
+      //  quizModelList = mutableListOf()
+       // getDataFromFirebase()
     }
 
     private fun setupRecyclerView(){
-        adapter = HomeAdapter(quizModelList)
+      //  adapter = HomeAdapter(quizModelList)
+        adapter = HomeAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
     }
 
-    private fun getDataFromFirebase(){
-
-        Firebase.database.reference.child("topics")
-            .get()
-            .addOnSuccessListener { dataSnapshot->
-                if(dataSnapshot.exists()){
-                    for (snapshot in dataSnapshot.children){
-                        val quizModel = snapshot.getValue(Topic::class.java)
-                        if (quizModel != null) {
-                            quizModelList.add(quizModel)
-                            Log.i("Score of quiz", quizModel.toString())
-                        }
-                    }
-                }
-                setupRecyclerView()
-            }
-
-    }
+//    private fun getDataFromFirebase(){
+//
+//        Firebase.database.reference.child("topics")
+//            .get()
+//            .addOnSuccessListener { dataSnapshot->
+//                if(dataSnapshot.exists()){
+//                    for (snapshot in dataSnapshot.children){
+//                        val quizModel = snapshot.getValue(Topic::class.java)
+//                        if (quizModel != null) {
+//                            quizModelList.add(quizModel)
+//                            Log.i("Score of quiz", quizModel.toString())
+//                        }
+//                    }
+//                }
+//                setupRecyclerView()
+//            }
+//
+//    }
 }

@@ -10,13 +10,13 @@ import by.slizh.quiz.repository.TopicRepository
 
 class TopicViewModel(application: Application) : AndroidViewModel(application) {
 
-//    private val repository: TopicRepository
-//    private val _allTopics = MutableLiveData<List<Topic>>()
-//    val allTopics: LiveData<List<Topic>> = _allTopics
-//
-//    init {
-//        repository = TopicRepository().getInstance()
-//        repository.getTopics(_allTopics)
-//    }
+    private val repository: TopicRepository
+    private val _allTopics = MutableLiveData<List<Topic>>()
+    val allTopics: LiveData<List<Topic>> = _allTopics
+
+    init {
+        repository = TopicRepository().getInstance()
+        repository.getTopics(_allTopics)
+    }
 
 }
