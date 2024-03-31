@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_fragments"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="by.slizh.quiz.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="by.slizh.quiz.fragments.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz" >
+        <argument
+            android:name="topic"
+            app:argType="by.slizh.quiz.data.Topic" />
+    </fragment>
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="by.slizh.quiz.fragments.RatingFragment"
+        android:label="RatingFragment" />
+</navigation>
