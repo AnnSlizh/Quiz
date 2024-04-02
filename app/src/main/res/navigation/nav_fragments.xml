@@ -10,15 +10,6 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/quizFragment"
-        android:name="by.slizh.quiz.fragments.QuizFragment"
-        android:label="fragment_quiz"
-        tools:layout="@layout/fragment_quiz" >
-        <argument
-            android:name="topic"
-            app:argType="by.slizh.quiz.data.Topic" />
-    </fragment>
-    <fragment
         android:id="@+id/ratingFragment"
         android:name="by.slizh.quiz.fragments.RatingFragment"
         android:label="RatingFragment" />

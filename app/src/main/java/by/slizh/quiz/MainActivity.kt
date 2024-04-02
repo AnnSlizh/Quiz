@@ -4,22 +4,16 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import by.slizh.quiz.fragments.HomeFragment
 import by.slizh.quiz.fragments.RatingFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.database.database
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,18 +21,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeButton: ImageButton
     private lateinit var ratingListButton: ImageButton
 
-    private lateinit var googleSignInClient: GoogleSignInClient
-
     private lateinit var fragmentManager: FragmentManager
 
+    private lateinit var googleSignInClient: GoogleSignInClient
 
-    //private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        signOutButton = findViewById(R.id.signOutButton)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -47,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        signOutButton = findViewById(R.id.signOutButton)
         signOutButton.setOnClickListener {
 
             val builder = AlertDialog.Builder(this)
@@ -58,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-                // auth.signOut()
+
                 Firebase.auth.signOut()
                 p0.dismiss()
             }
@@ -69,26 +60,15 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
 
-
-
-
-
         homeButton = findViewById(R.id.homeButton)
         homeButton.setOnClickListener {
-//            val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-//            navController.navigate(R.id.action_ratingFragment_to_homeFragment)
-           // navController.navigate(R.id.action_quizFragment_to_homeFragment)
             replaceFragment(HomeFragment())
-            //   Navigation.findNavController(this, R.id.fragmentContainerView)
         }
 
         ratingListButton = findViewById(R.id.ratingListButton)
         ratingListButton.setOnClickListener {
             replaceFragment(RatingFragment())
-//            val navController = Navigation.findNavController(this, R.id.fragmentContainerView)
-//            navController.navigate(R.id.action_homeFragment_to_ratingFragment)
         }
-
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -97,6 +77,5 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
         fragmentTransaction.commit()
-
     }
 }

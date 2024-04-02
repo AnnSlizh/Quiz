@@ -135,7 +135,6 @@ class AuthActivity : AppCompatActivity() {
         finish()
     }
 
-
     companion object {
         private const val REQ_ONE_TAP = 20
     }

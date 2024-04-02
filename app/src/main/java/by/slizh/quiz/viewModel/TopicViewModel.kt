@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import by.slizh.quiz.data.Topic
 import by.slizh.quiz.repository.TopicRepository
 
@@ -18,5 +17,4 @@ class TopicViewModel(application: Application) : AndroidViewModel(application) {
         repository = TopicRepository().getInstance()
         repository.getTopics(_allTopics)
     }
-
 }

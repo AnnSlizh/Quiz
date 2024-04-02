@@ -39,6 +39,4 @@ class UserResultViewModel(application: Application) : AndroidViewModel(applicati
             repository.updateUserResult(userId, score)
         }
     }
-
-
 }

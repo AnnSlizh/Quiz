@@ -4,7 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 
-
 @Parcelize
 data class Topic (
     val id: Int,
@@ -15,4 +14,5 @@ data class Topic (
 {
     constructor() : this(0,"","", emptyList())
 }
+
 

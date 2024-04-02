@@ -20,16 +20,16 @@
 
         />
 
-<!--    <include-->
-<!--        android:id="@+id/toolBar"-->
-<!--        layout="@layout/custom_toolbar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:menu="@menu/menu_toolbar">-->
-<!--    </include>-->
+    <!--    <include-->
+    <!--        android:id="@+id/toolBar"-->
+    <!--        layout="@layout/custom_toolbar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:menu="@menu/menu_toolbar">-->
+    <!--    </include>-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"

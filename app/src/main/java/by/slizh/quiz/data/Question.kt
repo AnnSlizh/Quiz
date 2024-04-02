@@ -9,7 +9,6 @@ data class Question (
     val answerList: List<String>,
     val correctAnswer: String
 ): Parcelable
-
 {
     constructor() : this ("", emptyList(),"")
 }
