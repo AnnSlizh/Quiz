@@ -104,7 +104,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <Button
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
@@ -114,6 +113,18 @@
         android:layout_marginVertical="4dp"
         android:backgroundTint="@color/purple"
         android:text="Next"
+        android:textSize="18sp" />
+
+
+    <Button
+        android:id="@+id/helpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_marginVertical="4dp"
+        android:backgroundTint="@color/purple"
+        android:text="Help"
         android:textSize="18sp" />
 
 </LinearLayout>

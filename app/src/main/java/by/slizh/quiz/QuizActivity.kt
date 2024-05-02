@@ -17,6 +17,7 @@ import by.slizh.quiz.viewModel.UserResultViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import kotlin.random.Random
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -46,6 +47,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             answer3Btn.setOnClickListener(this@QuizActivity)
             answer4Btn.setOnClickListener(this@QuizActivity)
             nextButton.setOnClickListener(this@QuizActivity)
+            helpButton.setOnClickListener(this@QuizActivity)
         }
 
         loadQuestions()
@@ -99,10 +101,14 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             answer2Btn.text = questionsList[currentQuestionIndex].answerList[1]
             answer3Btn.text = questionsList[currentQuestionIndex].answerList[2]
             answer4Btn.text = questionsList[currentQuestionIndex].answerList[3]
+            helpButton.visibility = View.VISIBLE
+            answer3Btn.visibility = View.VISIBLE
+            answer4Btn.visibility = View.VISIBLE
         }
     }
 
     override fun onClick(view: View?) {
+
 
         binding.apply {
             answer1Btn.setBackgroundColor(getColor(R.color.light_gray))
@@ -112,6 +118,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         val clickedButton = view as Button
+
         if (clickedButton.id == R.id.nextButton) {
             //next button is clicked
             if (selectedAnswer.isEmpty()) {
@@ -128,6 +135,33 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             }
             currentQuestionIndex++
             loadQuestions()
+        } else if (clickedButton.id == R.id.helpButton) {
+            selectedAnswer = ""
+
+            binding.apply {
+                var correctAnswerIndex = 0
+                val buttons = arrayListOf(0, 1, 2, 3)
+
+                helpButton.visibility = View.GONE
+
+                for (i in 0..3) {
+                    if (questionsList[currentQuestionIndex].answerList[i] == questionsList[currentQuestionIndex].correctAnswer) {
+                        correctAnswerIndex = i
+                        buttons.remove(i)
+                        break
+                    }
+                }
+
+                val randomIndex = (0 until buttons.size).random()
+                val randomValue = buttons[randomIndex]
+
+                answer1Btn.text = questionsList[currentQuestionIndex].answerList[randomValue]
+                answer2Btn.text = questionsList[currentQuestionIndex].correctAnswer
+                answer3Btn.visibility = View.GONE
+                answer4Btn.visibility = View.GONE
+            }
+
+
         } else {
             //options button is clicked
             selectedAnswer = clickedButton.text.toString()
